@@ -1,0 +1,129 @@
+C51 COMPILER V9.53.0.0   MATRIX_KEYPAD                                                     12/29/2018 15:26:55 PAGE 1   
+
+
+C51 COMPILER V9.53.0.0, COMPILATION OF MODULE MATRIX_KEYPAD
+OBJECT MODULE PLACED IN MATRIX_KEYPAD.OBJ
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE MATRIX_KEYPAD.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #include "8051_delay.h"
+   3          #include "LCD_4_BIT_HEADER_FILE.h"
+   4          
+   5          sbit a = P3^4;     //defines row A
+   6          sbit b = P3^5;     //defines row B
+   7          sbit c = P3^6;     //defines row C
+   8          sbit d = P3^7;     //defines row D
+   9          
+  10          char READ_SWITCHES()
+  11          {
+  12   1        P3 =0xfe;
+  13   1        {
+  14   2          if (a == 0)
+  15   2          {
+  16   3            return '3';
+  17   3          }
+  18   2          if (b == 0)
+  19   2          {
+  20   3            return '6';
+  21   3          }
+  22   2          if (c == 0)
+  23   2          {
+  24   3            return '9';
+  25   3          }
+  26   2          if (d == 0)
+  27   2          {
+  28   3            return '#';
+  29   3          }
+  30   2        }
+  31   1      
+  32   1        P3 =0xfd;
+  33   1        {
+  34   2          if (a == 0)
+  35   2          {
+  36   3            return '2';
+  37   3          }
+  38   2          if (b == 0)
+  39   2          {
+  40   3            return '5';
+  41   3          }
+  42   2          if (c == 0)
+  43   2          {
+  44   3            return '8';
+  45   3          }
+  46   2          if (d == 0)
+  47   2          {
+  48   3            return '0';
+  49   3          }
+  50   2        }
+  51   1      
+  52   1        P3 =0xfb;
+  53   1        {
+  54   2          if (a == 0)
+  55   2          {
+C51 COMPILER V9.53.0.0   MATRIX_KEYPAD                                                     12/29/2018 15:26:55 PAGE 2   
+
+  56   3            return '1';
+  57   3          }
+  58   2          if (b == 0)
+  59   2          {
+  60   3            return '4';
+  61   3          }
+  62   2          if (c == 0)
+  63   2          {
+  64   3            return '7';
+  65   3          }
+  66   2          if (d == 0)
+  67   2          {
+  68   3            return '*';
+  69   3          }
+  70   2        }
+  71   1        return 'n';                 // Means no key has been pressed
+  72   1      }
+  73          
+  74          char get_key(void)            //get key from user
+  75          {
+  76   1        char key = 'n';             //assume no key pressed
+  77   1       
+  78   1        while(key=='n')             //wait untill a key is pressed
+  79   1          key = READ_SWITCHES();    //scan the keys again and again
+  80   1       
+  81   1        return key;                 //when key pressed then return its value
+  82   1      }
+  83          
+  84          void main()
+  85          {
+  86   1        int i;
+  87   1      //  char key;                   // key char for keeping record of pressed key
+  88   1        
+  89   1        Lcd_Intialization();
+  90   1      
+  91   1        Lcd_Command(0x80);
+  92   1        Lcd_String("LYCA SOFT");
+  93   1      
+  94   1        Lcd_Command(0xC0);
+  95   1        Lcd_String("KEPDAD:");
+  96   1        
+  97   1        while(1)
+  98   1        {
+  99   2            Lcd_Command(0XC7);
+ 100   2      
+ 101   2            i = get_key();          // Get pressed key
+ 102   2            Lcd_Data(i);
+ 103   2        }
+ 104   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    308    ----
+   CONSTANT SIZE    =     18    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
